@@ -1,5 +1,6 @@
 import struct
-import os
+import os  # Добавили импорт
+from typing import BinaryIO
 from tree import FrequencyTree
 from counter import FrequencyCounter
 
@@ -48,7 +49,17 @@ class Archiver:
             file_out.seek(0)
             file_out.write(struct.pack('B', padding))
 
-    def write_header(self, file_out):
+            return file_out
+
+    def write_header(self, file_out: BinaryIO):
+        # 1. Записываем оригинальное имя файла
+        base_filename = os.path.basename(self.filename)
+        filename_bytes = base_filename.encode('utf-8')
+        # H - unsigned short (2 байта), длины имени хватит до 65535 символов
+        file_out.write(struct.pack('H', len(filename_bytes)))
+        file_out.write(filename_bytes)
+
+        # 2. Записываем словарь частот
         file_out.write(struct.pack('H', len(self.freq_dict)))
 
         for char, freq in self.freq_dict.items():
