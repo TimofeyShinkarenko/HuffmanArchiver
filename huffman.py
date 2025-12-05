@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
 import argparse
-from archiver import Archiver
-from unpacker import Unpacker
+from huffman_algorithm.archiver import Archiver
+from huffman_algorithm.unpacker import Unpacker
 
 
 def parse_arguments():

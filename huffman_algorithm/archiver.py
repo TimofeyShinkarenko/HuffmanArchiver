@@ -1,8 +1,9 @@
 import struct
-import os  # Добавили импорт
+import os
 from typing import BinaryIO
 from tree import FrequencyTree
 from counter import FrequencyCounter
+
 
 
 class Archiver:
@@ -15,7 +16,7 @@ class Archiver:
         self.codes = self.tree.generate_codes()
 
     def compress(self, output_filename: str):
-        with (open(self.filename, 'r', encoding='utf-8') as file_in, open(
+        with (open(self.filename, 'rb') as file_in, open(
                 output_filename, 'wb') as file_out):
             file_out.write(struct.pack('B', 0))
             self.write_header(file_out)
@@ -28,8 +29,8 @@ class Archiver:
                 if not chunk:
                     break
 
-                for char in chunk:
-                    code = self.codes[char]
+                for byte_val in chunk:
+                    code = self.codes[byte_val]
 
                     for bit in code:
                         buffer = (buffer << 1) | int(bit)
@@ -52,18 +53,12 @@ class Archiver:
             return file_out
 
     def write_header(self, file_out: BinaryIO):
-        # 1. Записываем оригинальное имя файла
         base_filename = os.path.basename(self.filename)
         filename_bytes = base_filename.encode('utf-8')
-        # H - unsigned short (2 байта), длины имени хватит до 65535 символов
         file_out.write(struct.pack('H', len(filename_bytes)))
         file_out.write(filename_bytes)
-
-        # 2. Записываем словарь частот
         file_out.write(struct.pack('H', len(self.freq_dict)))
 
-        for char, freq in self.freq_dict.items():
-            char_bytes = char.encode('utf-8')
-            file_out.write(struct.pack('B', len(char_bytes)))
-            file_out.write(char_bytes)
+        for byte_val, freq in self.freq_dict.items():
+            file_out.write(struct.pack('B', byte_val))
             file_out.write(struct.pack('I', freq))

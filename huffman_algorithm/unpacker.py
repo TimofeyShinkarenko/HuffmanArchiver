@@ -20,14 +20,13 @@ class Unpacker:
             original_filename = original_filename_bytes.decode("utf-8")
 
             target_output = output_filename if output_filename else original_filename
-
             freq_dict = self.read_header(file_in)
 
             huff_tree = FrequencyTree(freq_dict)
             huff_tree.make_tree()
             root = huff_tree.root
 
-            with open(target_output, "w", encoding="utf-8") as file_out:
+            with open(target_output, "wb") as file_out:
                 curr_node = root
                 chunk = file_in.read(1)
 
@@ -48,7 +47,7 @@ class Unpacker:
                             curr_node = curr_node.right
 
                         if curr_node.left is None and curr_node.right is None:
-                            file_out.write(curr_node.char)
+                            file_out.write(bytes([curr_node.char]))
                             curr_node = root
                     chunk = next_chunk
 
@@ -60,11 +59,8 @@ class Unpacker:
         dict_len = struct.unpack("H", dict_len_bytes)[0]
 
         for _ in range(dict_len):
-            symbol_len_bytes = file_in.read(1)
-            symbol_len = struct.unpack("B", symbol_len_bytes)[0]
-
-            symbol_bytes = file_in.read(symbol_len)
-            symbol = symbol_bytes.decode("utf-8")
+            symbol_byte = file_in.read(1)
+            symbol = struct.unpack("B", symbol_byte)[0]  # Получаем int
 
             freq_bytes = file_in.read(4)
             freq = struct.unpack("I", freq_bytes)[0]

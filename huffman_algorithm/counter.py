@@ -3,14 +3,14 @@ class FrequencyCounter:
         self.inclusions = {}
         self.filename = filename
 
-    def count_in_text(self, text: str):
-        for symbol in text:
-            if symbol not in self.inclusions:
-                self.inclusions[symbol] = 0
-            self.inclusions[symbol] += 1
+    def count_in_text(self, text: bytes):
+        for byte_val in text:
+            if byte_val not in self.inclusions:
+                self.inclusions[byte_val] = 0
+            self.inclusions[byte_val] += 1
 
     def get_frequency_dict(self):
-        with open(self.filename, 'r') as f:
+        with open(self.filename, 'rb') as f:
             while True:
                 chunk = f.read(4096)
                 if not chunk:

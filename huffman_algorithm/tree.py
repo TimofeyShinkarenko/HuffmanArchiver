@@ -1,6 +1,5 @@
 from queue import PriorityQueue
-
-from node import Node
+from archiver.node import Node
 
 
 class FrequencyTree:
