@@ -22,3 +22,17 @@ class Packer:
                 tar.extractall(path=output_folder, filter='data')
             except TypeError:
                 tar.extractall(path=output_folder)
+
+    def list_contents(self):
+        try:
+            with tarfile.open(self.archive_name, "r") as tar:
+                members = tar.getmembers()
+
+                for member in members:
+                    type_str = "<DIR>" if member.isdir() else "     "
+                    print(
+                        f"{type_str} {member.name:<30} | {member.size:>10} bytes")
+
+        except tarfile.ReadError:
+            print(
+                "Error: Could not read tar archive. File might be corrupted.")

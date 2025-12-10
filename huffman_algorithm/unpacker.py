@@ -1,5 +1,7 @@
 import struct
 from typing import BinaryIO
+
+from huffman_algorithm.hashing import Hasher
 from huffman_algorithm.tree import FrequencyTree
 
 
@@ -8,6 +10,8 @@ class Unpacker:
         self.filename = filename
 
     def unpack(self, output_filename: str = None):
+        expected_hash = None
+
         with open(self.filename, "rb") as file_in:
             padding_bytes = file_in.read(1)
             if not padding_bytes:
@@ -18,6 +22,8 @@ class Unpacker:
             filename_len = struct.unpack("H", filename_len_bytes)[0]
             original_filename_bytes = file_in.read(filename_len)
             original_filename = original_filename_bytes.decode("utf-8")
+
+            expected_hash = file_in.read(32)
 
             target_output = output_filename if output_filename else original_filename
             freq_dict = self.read_header(file_in)
@@ -50,6 +56,15 @@ class Unpacker:
                             file_out.write(bytes([curr_node.char]))
                             curr_node = root
                     chunk = next_chunk
+
+        actual_hash = Hasher.get_file_hash(target_output)
+
+        if actual_hash == expected_hash:
+            print(f" Integrity Check ok, (SHA-256 match)")
+        else:
+
+            raise ValueError(
+                "Integrity Check failed, the file is corrupted.")
 
     @staticmethod
     def read_header(file_in: BinaryIO) -> dict:

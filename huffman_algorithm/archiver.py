@@ -1,6 +1,8 @@
 import struct
 import os
 from typing import BinaryIO
+
+from huffman_algorithm.hashing import Hasher
 from huffman_algorithm.tree import FrequencyTree
 from huffman_algorithm.counter import FrequencyCounter
 
@@ -15,10 +17,12 @@ class Archiver:
         self.codes = self.tree.generate_codes()
 
     def compress(self, output_filename: str):
+        file_hash = Hasher.get_file_hash(self.filename)
+
         with (open(self.filename, 'rb') as file_in, open(
                 output_filename, 'wb') as file_out):
             file_out.write(struct.pack('B', 0))
-            self.write_header(file_out)
+            self.write_header(file_out, file_hash)
 
             buffer = 0
             bit_count = 0
@@ -51,11 +55,16 @@ class Archiver:
 
             return file_out
 
-    def write_header(self, file_out: BinaryIO):
+    def write_header(self, file_out: BinaryIO, file_hash: bytes):
         base_filename = os.path.basename(self.filename)
         filename_bytes = base_filename.encode('utf-8')
         file_out.write(struct.pack('H', len(filename_bytes)))
         file_out.write(filename_bytes)
+
+        if len(file_hash) != 32:
+            raise ValueError("Hash must be 32 bytes (SHA-256)")
+        file_out.write(file_hash)
+
         file_out.write(struct.pack('H', len(self.freq_dict)))
 
         for byte_val, freq in self.freq_dict.items():
