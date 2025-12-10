@@ -1,6 +1,6 @@
 import struct
 from typing import BinaryIO
-from tree import FrequencyTree
+from huffman_algorithm.tree import FrequencyTree
 
 
 class Unpacker:

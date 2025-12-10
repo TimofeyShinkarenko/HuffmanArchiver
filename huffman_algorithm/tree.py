@@ -1,5 +1,5 @@
 from queue import PriorityQueue
-from archiver.node import Node
+from huffman_algorithm.node import Node
 
 
 class FrequencyTree:

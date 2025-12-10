@@ -1,9 +1,8 @@
 import struct
 import os
 from typing import BinaryIO
-from tree import FrequencyTree
-from counter import FrequencyCounter
-
+from huffman_algorithm.tree import FrequencyTree
+from huffman_algorithm.counter import FrequencyCounter
 
 
 class Archiver:
