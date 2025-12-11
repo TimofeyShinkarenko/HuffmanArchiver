@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="703d1c25-6056-41a0-9c5d-d4884ab27302" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/huffman.py" beforeDir="false" afterPath="$PROJECT_DIR$/huffman.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/huffman_algorithm/archiver.py" beforeDir="false" afterPath="$PROJECT_DIR$/huffman_algorithm/archiver.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/huffman_algorithm/packer.py" beforeDir="false" afterPath="$PROJECT_DIR$/huffman_algorithm/packer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/huffman_algorithm/unpacker.py" beforeDir="false" afterPath="$PROJECT_DIR$/huffman_algorithm/unpacker.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -221,7 +217,8 @@
       <workItem from="1765089617775" duration="16000" />
       <workItem from="1765296223790" duration="934000" />
       <workItem from="1765355795661" duration="3022000" />
-      <workItem from="1765359890633" duration="1552000" />
+      <workItem from="1765359890633" duration="2105000" />
+      <workItem from="1765471918063" duration="467000" />
     </task>
     <servers />
   </component>
